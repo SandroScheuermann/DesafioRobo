@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesafioRobo
+namespace RoboEncapsulamento
 {
     class Program
     {
@@ -18,7 +18,6 @@ namespace DesafioRobo
 
             while (true)
             {
-
                 Console.WriteLine("\nDigite a posição inicial do robô :");
 
                 posInicial = Console.ReadLine();
@@ -31,7 +30,6 @@ namespace DesafioRobo
 
                 robo.Mover(movimento);
 
-                robo.MostrarResultado();
             }
         }
     }

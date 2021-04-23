@@ -4,122 +4,135 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesafioRobo
+namespace RoboEncapsulamento
 {
     class Robo
     {
-
-        string grid = "", faceAtual = "", posInicial = "";
-        int posX, posY;
-        string[] gridDados;
-        string[] posInicialDados;
-
+        private string grid = "", faceAtual = "", posInicial = "";
+        private int posX, posY;
+        private string[] posInicialDados, gridSplit;
         public Robo(string grid, string posInicial)
         {
             this.posInicial = posInicial;
             this.grid = grid;
 
         }
-
         public void Mover(string movimento)
         {
-
-            gridDados = grid.Split(' ');
             posInicialDados = posInicial.Split(' ');
-            this.posX = Int16.Parse(posInicialDados[0]);
-            this.posY = Int16.Parse(posInicialDados[1]);
-            this.faceAtual = posInicialDados[2];
+            posX = Int16.Parse(posInicialDados[0]);
+            posY = Int16.Parse(posInicialDados[1]);
+            faceAtual = posInicialDados[2];
+            gridSplit = grid.Split(' ');
 
-
-            for (int i = 0; i < movimento.Length; i++)
+            if (Int16.Parse(gridSplit[0]) < posX || Int16.Parse(gridSplit[1]) < posY)
             {
-                if (movimento[i].Equals('e') || movimento[i].Equals('E'))
+                Console.WriteLine("\nPosição inicial fora dos limites do grid ! ");
+            }
+            else
+            {
+                for (int i = 0; i < movimento.Length; i++)
                 {
-
-                    if (this.faceAtual.Equals("n", StringComparison.OrdinalIgnoreCase))
+                    if (movimento[i].Equals('e') || movimento[i].Equals('E'))
                     {
-                        this.faceAtual = "O";
+                        if (faceAtual.Equals("n", StringComparison.OrdinalIgnoreCase))
+                        {
+                            faceAtual = "O";
 
+                        }
+                        else if (faceAtual.Equals("o", StringComparison.OrdinalIgnoreCase))
+                        {
+                            faceAtual = "S";
+
+                        }
+                        else if (faceAtual.Equals("s", StringComparison.OrdinalIgnoreCase))
+                        {
+                            faceAtual = "L";
+
+                        }
+                        else if (this.faceAtual.Equals("l", StringComparison.OrdinalIgnoreCase))
+                        {
+                            faceAtual = "N";
+
+                        }
                     }
-                    else if (this.faceAtual.Equals("o", StringComparison.OrdinalIgnoreCase))
+                    else if (movimento[i].Equals('d') || movimento[i].Equals('D'))
                     {
-                        this.faceAtual = "S";
 
+                        if (faceAtual.Equals("n", StringComparison.OrdinalIgnoreCase))
+                        {
+                            faceAtual = "L";
+
+                        }
+                        else if (faceAtual.Equals("o", StringComparison.OrdinalIgnoreCase))
+                        {
+                            faceAtual = "N";
+
+                        }
+                        else if (faceAtual.Equals("s", StringComparison.OrdinalIgnoreCase))
+                        {
+                            faceAtual = "O";
+
+                        }
+                        else if (faceAtual.Equals("l", StringComparison.OrdinalIgnoreCase))
+                        {
+                            faceAtual = "S";
+
+                        }
                     }
-                    else if (this.faceAtual.Equals("s", StringComparison.OrdinalIgnoreCase))
+                    else if (movimento[i].Equals('m') || movimento[i].Equals('M'))
                     {
-                        this.faceAtual = "L";
 
-                    }
-                    else if (this.faceAtual.Equals("l", StringComparison.OrdinalIgnoreCase))
-                    {
-                        this.faceAtual = "N";
+                        if (faceAtual.Equals("n", StringComparison.OrdinalIgnoreCase))
+                        {
+                            posY++;
 
+                        }
+                        if (faceAtual.Equals("s", StringComparison.OrdinalIgnoreCase))
+                        {
+                            posY--;
+
+                        }
+                        if (faceAtual.Equals("l", StringComparison.OrdinalIgnoreCase))
+                        {
+                            posX++;
+
+                        }
+                        if (faceAtual.Equals("o", StringComparison.OrdinalIgnoreCase))
+                        {
+                            posX--;
+
+                        }
                     }
                 }
 
-                else if (movimento[i].Equals('d') || movimento[i].Equals('D'))
+                if (ValidaMovimento() == true)
                 {
-
-                    if (this.faceAtual.Equals("n", StringComparison.OrdinalIgnoreCase)) 
-                    {
-                        this.faceAtual = "L";
-
-                    }
-                    else if (this.faceAtual.Equals("o", StringComparison.OrdinalIgnoreCase))
-                    {
-                        this.faceAtual = "N";
-
-                    }
-                    else if (this.faceAtual.Equals("s", StringComparison.OrdinalIgnoreCase))
-                    {
-                        this.faceAtual = "O";
-
-                    }
-                    else if (this.faceAtual.Equals("l", StringComparison.OrdinalIgnoreCase))
-                    {
-                        this.faceAtual = "S";
-
-                    }
+                    MostrarResultado();
+                }
+                else
+                {
+                    Console.WriteLine("Posição final do movimento fora dos limites do grid!");
                 }
 
-                else if (movimento[i].Equals('m') || movimento[i].Equals('M')) 
-                {
+            }
 
-                    if (this.faceAtual.Equals("n", StringComparison.OrdinalIgnoreCase))
-                    {
-                        this.posY++;
+        }
+        private void MostrarResultado()
+        {
+            Console.Write("\n" + posX.ToString() + " " + posY.ToString() + " " + faceAtual + "\n");
 
-                    }
-                    if (this.faceAtual.Equals("s", StringComparison.OrdinalIgnoreCase))
-                    {
-                        this.posY--;
-
-                    }
-                    if (this.faceAtual.Equals("l", StringComparison.OrdinalIgnoreCase))
-                    {
-                        this.posX++;
-
-                    }
-                    if (this.faceAtual.Equals("o", StringComparison.OrdinalIgnoreCase))
-                    {
-                        this.posX--;
-
-                    }
-                }
+        }
+        private bool ValidaMovimento()
+        {
+            if (Int16.Parse(gridSplit[0]) < posX || posX<0 || Int16.Parse(gridSplit[1]) < posY || posY<0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
-
-        public void MostrarResultado()
-        {
-            Console.Write("\n" +this.posX.ToString() + " " + this.posY.ToString() + " " + this.faceAtual + "\n");
-
-        }
-
     }
-
-
-
-
-
 }
